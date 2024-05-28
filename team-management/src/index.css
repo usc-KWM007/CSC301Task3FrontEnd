@@ -84,3 +84,15 @@ button:focus-visible {
   justify-content: center;
 
 }
+
+#taskLargeView{
+  align-items: center;
+  background: white;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1em;
+  margin: 1em;
+
+}
