@@ -96,3 +96,13 @@ button:focus-visible {
   margin: 1em;
 
 }
+
+#formBody{
+  
+  display: flex;
+  justify-content: center;
+  
+}
+input {
+  color-scheme: light;
+}

@@ -4,7 +4,7 @@ import TaskCard from '../components/taskCard';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import TaskCardView from '../components/TaskLargeView'
-import { Modal } from 'react-bootstrap';
+import { Button, Modal } from 'react-bootstrap';
 
 
 
@@ -46,8 +46,8 @@ export default function Home() {
           <div id='taskLargeView'>
             <TaskCardView task={tasks[taskClickData]} />
             <div>
-              <button onClick={() => setTaskClickState(false)}>Close</button>
-              <button onClick={() => setTaskClickState(false)}>Edit</button>
+              <Button onClick={() => setTaskClickState(false)}>Close</Button>
+              <Button onClick={() => setTaskClickState(false)}>Edit</Button>
             </div>
           </div>
 
