@@ -1,8 +1,37 @@
 import { useState } from "react";
 import { Form } from "react-bootstrap";
-import { Button } from "react-bootstrap"
+import { Button } from "react-bootstrap";
+import axios from "axios";
+import { useNavigate } from "react-router-dom"
+
+const loginUrl = 'http://127.0.0.1:3000/login';
 
 function Login() {
+    const navigate = useNavigate();
+
+    async function submitLogin(data){
+        try {
+            //using axios returns array of objects
+            const response = await axios.post(loginUrl,{
+                email: data.email,
+                password: data.password,
+            });
+            console.log("Success")
+            console.log(response);
+            if (response == "Cool, it's you are allowed 🤞"){
+                navigate('/dashboard');
+            } else{
+                console.log("failed");
+            }          
+        } catch (err) {
+            //if error getting questions show an error
+            /*const error = document.createElement("STRONG");
+            error.innerHTML = err.message;
+            networkError.insertBefore(error, networkError.firstChild);
+            networkError.hidden = false;*/
+            console.log(err)
+        }
+    }
 
     const [formData, setFormData] = useState({
         email: "",
@@ -17,6 +46,8 @@ function Login() {
         event.preventDefault();
         console.log(formData);
         //where we submit to backend
+        check = submitLogin(formData);
+        
     }
 
 
