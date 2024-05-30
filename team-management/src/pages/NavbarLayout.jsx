@@ -30,6 +30,7 @@ const NavBarLayout = () => {
                     <Nav>
                         <Nav.Link href="/settings">Settings</Nav.Link>
                         <Nav.Link href="/logout">Logout</Nav.Link>
+                        <Nav.Link href="/signUp">Sign Up</Nav.Link>
                     </Nav>
                 </Navbar.Collapse>
             </Container>

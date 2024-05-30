@@ -36,35 +36,43 @@ function AddTask() {
     return (
         <>
             <h1>New Task</h1>
-            <div id = "formBody">
+            <div id="formBody">
                 <Form onSubmit={handleSubmit}>
                     <Form.Group className="mb-3">
                         <Form.Label>Task Name</Form.Label>
-                        <Form.Control type="text" name = "taskName" placeholder="Enter task name" required value={formData.taskName} onChange={handleChange} />
+                        <Form.Control type="text" name="taskName" placeholder="Enter task name" required value={formData.taskName} onChange={handleChange} />
                     </Form.Group>
 
-                    <Form.Group className="mb-3">
-                        <Form.Label>Task Due Date</Form.Label>
-                        <Form.Control type="datetime-local" data-bs-theme="light" placeholder = "" name = "taskDueDate" value={formData.taskDueDate} onChange={handleChange} />
-                    </Form.Group>
+                    <div id="twoRowForm">
+                        <div id="column49">
+                            <Form.Group className="mb-3">
+                                <Form.Label>Task Due Date</Form.Label>
+                                <Form.Control type="datetime-local" placeholder="" name="taskDueDate" value={formData.taskDueDate} onChange={handleChange} />
+                            </Form.Group>
+                        </div>
 
-                    <Form.Group className="mb-3">
-                        <Form.Label>Task Location</Form.Label>
-                        <Form.Control type="text" name = "taskLocation" placeholder="Enter task location" value={formData.taskLocation} onChange={handleChange} />
-                    </Form.Group>
+                        <div id="column49">
+                            <Form.Group className="mb-3">
+                                <Form.Label>Task Location</Form.Label>
+                                <Form.Control type="text" name="taskLocation" placeholder="Enter task location" value={formData.taskLocation} onChange={handleChange} />
+                            </Form.Group>
+                        </div>
+                    </div>
 
                     <Form.Group className="mb-3">
                         <Form.Label>Task Description</Form.Label>
-                        <Form.Control type="textarea" name = "taskDescription" placeholder="Enter task description" required value={formData.taskDescription} onChange={handleChange} />
+                        <Form.Control as="textarea" rows="4" name="taskDescription" placeholder="Enter task description" required value={formData.taskDescription} onChange={handleChange} />
                     </Form.Group>
 
-                    <Select options = {options} value = {selectedEmployees} onChange={handleEmployeeChange} isMulti={true}/>
+                    <Select options={options} value={selectedEmployees} onChange={handleEmployeeChange} isMulti={true} />
 
-                    <Button variant="primary" type="submit">
-                        Submit
-                    </Button>
+                    <div id="formButton">
+                        <Button variant="primary" type="submit">
+                            Submit
+                        </Button>
+                    </div>
                 </Form>
-                
+
             </div>
         </>
     )
