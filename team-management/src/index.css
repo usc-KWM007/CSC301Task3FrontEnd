@@ -118,6 +118,10 @@ button:focus-visible {
   text-align: center;
 }
 
+#formCenterText{
+  text-align: center;
+}
+
 .form-control {
   color-scheme: light;
 }

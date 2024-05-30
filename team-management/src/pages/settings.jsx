@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Form } from "react-bootstrap";
-import { Button } from "react-bootstrap"
+import { Button, ButtonGroup, ToggleButton } from "react-bootstrap"
 
 function Settings() {
 
@@ -9,7 +9,38 @@ function Settings() {
         password: "password",
         firstName: "Jeff",
         lastName: "Smith",
-        role: "Coder"
+        role: "Coder",
+    }
+
+    let appPref = {
+        theme: "1",
+        defaultOrder: "1"
+    }
+
+    const themeOptions = [
+        { name: 'light', value: '1' },
+        { name: 'dark', value: '2' }
+    ]
+
+    const defaultOrderOptions = [
+        { name: 'Name Asc', value: '1' },
+        { name: 'Name Dsc', value: '2' },
+        { name: 'Date Asc', value: '3' },
+        { name: 'Date Dsc', value: '4' },
+        { name: 'Applying to you', value: '5' },
+        { name: 'Overdue', value: '6' }
+    ]
+
+    const [themeChoice, setThemeChoice] = useState(appPref.defaultOrder);
+
+    const handleThemeChoice = (event) => {
+        setThemeChoice(event.currentTarget.value)
+    }
+
+    const [defaultOrderChoice, setDefaultOrderChoice] = useState(appPref.theme);
+
+    const handleDefaultOrderChoice = (event) => {
+        setDefaultOrderChoice(event.currentTarget.value)
     }
 
     const [formData, setFormData] = useState({
@@ -27,6 +58,8 @@ function Settings() {
     const handleSubmit = (event) => {
         event.preventDefault();
         console.log(formData);
+        console.log(themeChoice);
+        console.log(defaultOrderChoice);
         //where we submit to backend
     }
 
@@ -64,6 +97,48 @@ function Settings() {
                         <Form.Control type="text" name="role" placeholder="Role" required value={formData.role} onChange={handleChange} />
                     </Form.Group>
 
+
+                    <h2 id="formCenterText">Preferences</h2>
+
+                    <div id="formButton">
+                        <h3 id="formCenterText">Theme</h3>
+                        <ButtonGroup>
+                            {themeOptions.map((theme, idx) => (
+                                <ToggleButton
+                                    key={idx}
+                                    id={`theme-${idx}`}
+                                    type="radio"
+                                    variant={idx % 2 ? 'outline-dark' : 'outline-primary'}
+                                    name="theme"
+                                    value={theme.value}
+                                    checked={themeChoice === theme.value}
+                                    onChange={handleThemeChoice}
+                                >
+                                    {theme.name}
+                                </ToggleButton>
+                            ))}
+                        </ButtonGroup>
+                        <h3 id="formCenterText">Default Order for Tasks</h3>
+                        <ButtonGroup>
+                            {defaultOrderOptions.map((defaultOrder, idx) => (
+                                <ToggleButton
+                                    key={idx}
+                                    id={`defaultOrder-${idx}`}
+                                    type="radio"
+                                    variant={'outline-primary'}
+                                    name="defaultOrder"
+                                    value={defaultOrder.value}
+                                    checked={defaultOrderChoice === defaultOrder.value}
+                                    onChange={handleDefaultOrderChoice}
+                                >
+                                    {defaultOrder.name}
+                                </ToggleButton>
+                            ))}
+                        </ButtonGroup>
+
+                    </div>
+
+
                     <div id="formButton">
                         <Button variant="primary" type="submit">
                             Save Changes
@@ -71,9 +146,7 @@ function Settings() {
                     </div>
                 </Form>
             </div>
-            <div>
-                <h2>Preferences</h2>
-            </div>
+
         </>
     )
 };
