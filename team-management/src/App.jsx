@@ -17,7 +17,7 @@ const router = createBrowserRouter(
         <Route path = "dashboard" element={<Home />} />
         <Route path="addTask" element={<AddTask />} />
         <Route path = "settings" element={<Settings />} />
-        <Route path="logout" element={<Login />} />
+        <Route path="login" element={<Login />} />
         <Route path="signUp" element={<SignUp />} />
     </Route>
   )

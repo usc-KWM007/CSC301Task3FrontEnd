@@ -1,12 +1,30 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Form } from "react-bootstrap";
 import { Button } from "react-bootstrap"
-import employeeData from '../data/testDataEmployee.json'
 import Select from 'react-select'
+import { getEmployeesList, submitTask } from '../components/authentication'
 
-const options = employeeData; //Need to collect employeeData from backend in id,label, label being fname,lname
+//Need to collect employeeData from backend in id,label, label being fname,lname
 
+let data = [];
 function AddTask() {
+
+
+    const [isLoading, setLoading] = useState(true);
+    const [options, setOptions] = useState([]);
+
+    async function getData() {
+        let holder = []
+        let received = await getEmployeesList()
+        for (let i = 0; i < received.length; i++) {
+            data.push(received[i])
+            holder.push({ value: i + 1, label: `${received[i].firstname} ${received[i].lastname}` })
+        }
+        setOptions(holder);
+        setLoading(false)
+        return
+    }
+    useEffect(() => { getData() }, [])
 
     const [formData, setFormData] = useState({
         taskName: "",
@@ -30,8 +48,25 @@ function AddTask() {
         console.log(formData);
         console.log(selectedEmployees)
         //where we submit to backend
+        console.log("data")
+        console.log(data)
+
+        let taskEmployees = []
+        for (let i = 0; i < selectedEmployees.length; i++) {
+            let index = selectedEmployees[i].value - 1
+            console.log(selectedEmployees[i].value - 1)
+            taskEmployees.push(data[index].empid)
+
+        }
+        formData.taskEmployees = taskEmployees;
+
+        console.log(formData)
+        submitTask(formData)
     }
 
+    if (isLoading) {
+        return <div className="App">Loading...</div>;
+    }
 
     return (
         <>

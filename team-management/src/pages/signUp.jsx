@@ -2,33 +2,22 @@ import { useState } from "react";
 import { Form } from "react-bootstrap";
 import { Button } from "react-bootstrap";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { submitSignUp } from "../components/authentication"
 
 const signUpUrl = 'http://127.0.0.1:3000/signup';
 
-async function submitLogin(data){
-    try {
-        //using axios returns array of objects
-        const response = await axios.post(signUpUrl,{
-            email: data.email,
-            password: data.password,
-            firstname: data.firstName,
-            lastname: data.lastName,
-            role: data.role
-        });
-        console.log("Success");
-        console.log(response);
 
-    } catch (err) {
-        //if error getting questions show an error
-        /*const error = document.createElement("STRONG");
-        error.innerHTML = err.message;
-        networkError.insertBefore(error, networkError.firstChild);
-        networkError.hidden = false;*/
-        console.log(err)
-    }
-}
 
 function SignUp() {
+    const navigate = useNavigate();
+
+    async function submitData(formData){
+        let submission = await submitSignUp(formData)
+            console.log(submission)
+            if(submission.status == 200)
+                navigate('/login');
+    }
 
     const [formData, setFormData] = useState({
         email: "",
@@ -45,8 +34,8 @@ function SignUp() {
     const handleSubmit = (event) => {
         event.preventDefault();
         console.log(formData);
-        submitLogin(formData)
-        //where we submit to backend
+        submitData(formData)
+        
     }
 
 
