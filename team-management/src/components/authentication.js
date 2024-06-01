@@ -29,7 +29,25 @@ export async function getEmployeesList() {
         //using axios returns array of objects
         const response = await axios.get(backendUrl + '/addTask');
         console.log("Success");
-        console.log(response.data);
+        return response.data
+
+
+    } catch (err) {
+        //if error getting questions show an error
+        /*const error = document.createElement("STRONG");
+        error.innerHTML = err.message;
+        networkError.insertBefore(error, networkError.firstChild);
+        networkError.hidden = false;*/
+        console.log(err)
+        return err
+    }
+}
+
+export async function getTasks() {
+    try {
+        //using axios returns array of objects
+        const response = await axios.get(backendUrl + '/dashboard');
+        console.log("Success");
         return response.data
 
 
@@ -46,7 +64,6 @@ export async function getEmployeesList() {
 
 export async function submitTask(data) {
     try {
-        console.log(data.email, data.password)
         //using axios returns array of objects
         const response = await axios.post(backendUrl + '/addTask', {
             taskname: data.taskName,
@@ -56,7 +73,6 @@ export async function submitTask(data) {
             taskEmployees: data.taskEmployees
         });
         console.log("Success");
-        console.log(response);
 
         return response
     } catch (err) {

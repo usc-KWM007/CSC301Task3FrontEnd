@@ -3,12 +3,11 @@ import Button from 'react-bootstrap/Button';
 
 const TaskLargeView = ({ task }) => {
 
-
     return (
       <>
         <h1> hello </h1>
-        <div>{task.taskName}</div>
-        <div>{task.taskDescription}</div>
+        <div>{task.taskname}</div>
+        <div>{task.taskdescription}</div>
         
             
       </>
