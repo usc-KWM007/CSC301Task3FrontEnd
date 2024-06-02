@@ -80,18 +80,6 @@ export default function Home() {
   }
 
   const [isLoading, setLoading] = useState(true);
-
-
-  async function getData() {
-    let data = await getTasks()
-    setAllTasks(data);
-    setTasks(data);
-    setLoading(false)
-    console.log(tasks)
-  }
-
-  useEffect(() => { getData() }, [])
-
   const [taskClickState, setTaskClickState] = useState(false);
   const [taskClickData, setTaskClickData] = useState(null);
 
@@ -99,9 +87,18 @@ export default function Home() {
   const [allTasks, setAllTasks] = useState([]);
   const [searchWord, setSearchWord] = useState('');
   const [sortValue, setSortValue] = useState('');
+  
+  async function getData() {
+    let data = await getTasks();
+   
+    setAllTasks(data);
+    setTasks(data);
+    setLoading(false)
+  }
+
+  useEffect(() => { getData() },[])
 
   const updateSortMethod = (value) => {
-    console.log(value)
     setSortValue(value)
 
     switch (value) {
@@ -124,7 +121,6 @@ export default function Home() {
         break;
 
     }
-    console.log(tasks)
 
   }
 

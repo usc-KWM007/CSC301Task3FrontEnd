@@ -26,9 +26,9 @@ function AddTask() {
         return
     }
 
-    async function submitData(formData){
+    async function submitData(formData) {
         let submission = await submitTask(formData);
-        if(submission.status == 200)
+        if (submission.status == 200)
             navigate('/dashboard');
     }
 
@@ -99,7 +99,10 @@ function AddTask() {
                         <Form.Control as="textarea" rows="4" name="taskDescription" placeholder="Enter task description" required value={formData.taskDescription} onChange={handleChange} />
                     </Form.Group>
 
-                    <Select options={options} value={selectedEmployees} onChange={handleEmployeeChange} isMulti={true} />
+                    <Form.Group className="mb-3">
+                        <Form.Label>Assigned Employees</Form.Label>
+                        <Select options={options} value={selectedEmployees} onChange={handleEmployeeChange} isMulti={true} />
+                    </Form.Group>
 
                     <div id="formButton">
                         <Button variant="primary" type="submit">
@@ -108,7 +111,7 @@ function AddTask() {
                     </div>
                 </Form>
 
-            </div>
+            </div >
         </>
     )
 };

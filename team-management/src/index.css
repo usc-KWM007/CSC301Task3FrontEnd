@@ -165,5 +165,8 @@ button:focus-visible {
     align-items: center;
     margin-top: 1em;
     margin-bottom: 1em;
+  }  
+  #column20 {
+    width: 50%;
   }
 }

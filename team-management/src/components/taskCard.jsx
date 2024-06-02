@@ -1,19 +1,20 @@
-import { CardBody,ListGroup } from "react-bootstrap";
+import { ListGroup } from "react-bootstrap";
 import Card from "react-bootstrap/Card";
 
 const TaskCard = ({ task }) => {
 
-  
-  let taskDate = new Date(Date.parse(task.taskduedate))
-  let formattedDate = taskDate.toLocaleDateString();
-  let formattedTime = taskDate.toLocaleTimeString();
-  let formattedDateTime = `${formattedDate} ${formattedTime}`
-  
+  let formattedDateTime;
 
+  if (task.taskduedate) {
+    let taskDate = new Date(Date.parse(task.taskduedate))
+    let formattedDate = taskDate.toLocaleDateString();
+    let formattedTime = taskDate.toLocaleTimeString();
+    formattedDateTime = `${formattedDate} ${formattedTime}`
+  }
 
   return (
     <>
-      <Card style={{ width: "15rem", padding: "1em"}}>
+      <Card style={{ width: "15rem", padding: "1em" }}>
         <Card.Header>
           {task.taskname}
         </Card.Header>
@@ -26,11 +27,9 @@ const TaskCard = ({ task }) => {
         <Card.Body>
           <Card.Text>{task.tasklocation}</Card.Text>
           <ListGroup variant="flush">
-          {task.assignedEmployees.map((employee, index) => (
-              <ListGroup.Item key={index}>{employee.firstname+' '+employee.lastname}</ListGroup.Item>
-              ))}
-
-
+            {task.assignedEmployees.map((employee, index) => (
+              <ListGroup.Item key={index}>{employee.firstname + ' ' + employee.lastname}</ListGroup.Item>
+            ))}
 
           </ListGroup>
         </Card.Body>
