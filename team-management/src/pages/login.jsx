@@ -13,6 +13,7 @@ function Login() {
         let submission = await submitLogin(formData)
             console.log(submission)
             if(submission.status == 200)
+                localStorage.setItem("loginStatus", true);
                 navigate('/dashboard');
     }
 

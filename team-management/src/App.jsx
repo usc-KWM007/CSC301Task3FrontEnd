@@ -3,13 +3,14 @@ import './App.css'
 import { Route, createBrowserRouter, createRoutesFromElements, RouterProvider } from 'react-router-dom';
 
 import Home from './pages/home.jsx';
-import NavbarLayout from './pages/NavbarLayout.jsx';
+import NavbarLayout from './components/NavbarLayout.jsx';
 import Settings from './pages/settings.jsx';
 import AddTask from './pages/addTask.jsx';
 import Login from './pages/login.jsx';
 import SignUp from './pages/signUp.jsx';
 import EditTask from './pages/editTask.jsx';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import SignOut from './pages/signOut.jsx';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -21,6 +22,7 @@ const router = createBrowserRouter(
         <Route path="login" element={<Login />} />
         <Route path="signUp" element={<SignUp />} />
         <Route path="editTask" element={<EditTask />} />
+        <Route path="signOut" element={<SignOut />} />
     </Route>
   )
 )

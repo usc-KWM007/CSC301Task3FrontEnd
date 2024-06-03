@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import TaskLargeView from '../components/TaskLargeView'
 import { Button, Modal } from 'react-bootstrap';
-import { getTasks, deleteTask } from '../components/authentication';
+import { getTasks, deleteTask, loggedIn } from '../components/authentication';
 import SearchBar from '../components/searchBar';
 import SortBar from '../components/sortBar';
 import { useNavigate } from "react-router-dom";
@@ -164,10 +164,24 @@ export default function Home() {
     );
   };
 
-  if (isLoading) {
-    return <div className="App">Loading...</div>;
-  }
+  const [loginLoading, setLoginLoading] = useState(true);
 
+    useEffect(() => {
+        const checkLogin = async () => {
+            const check = await loggedIn();
+            console.log(check);
+            if (!check) {
+                navigate('/login')
+            } else {
+                setLoginLoading(false);
+            }
+        }
+        checkLogin();
+    }, [])
+
+    if (loginLoading || isLoading) {
+        return <div className="App">Loading...</div>;
+    }
 
   return (
     <>

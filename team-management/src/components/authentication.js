@@ -1,7 +1,5 @@
 import axios from 'axios';
 
-axios.defaults.withCredentials = true;
-
 const backendUrl = 'http://127.0.0.1:3000';
 
 //USER AND AUTH ROUTES
@@ -24,10 +22,47 @@ export const signin = user => {
 }
 */
 
+export async function loggedIn() {
+    try {
+        //using axios returns array of objects
+        const response = await axios.get(backendUrl + '/loggedIn', {withCredentials:true});
+        console.log("Success");
+        if (response.status==200){
+            console.log("SIGNED IN")
+            localStorage.setItem("loginStatus", true);
+            return true
+        }
+        else{
+            localStorage.setItem("loginStatus", false);
+            
+            return false
+        }
+    } catch (err) {
+        localStorage.setItem("loginStatus", false);
+        console.log(err)
+        return false
+    }
+}
+
+export async function signOut() {
+    try {
+        //using axios returns array of objects
+        const response = await axios.get(backendUrl + '/signOut', {withCredentials:true});
+        console.log("Success");
+        console.log("SIGNED OUT")
+        localStorage.setItem("loginStatus", false);
+        return
+    } catch (err) {
+        localStorage.setItem("loginStatus", false);
+        console.log(err)
+        return
+    }
+}
+
 export async function getEmployeesList() {
     try {
         //using axios returns array of objects
-        const response = await axios.get(backendUrl + '/addTask');
+        const response = await axios.get(backendUrl + '/addTask', {withCredentials:true});
         console.log("Success");
         return response.data
 
@@ -46,7 +81,7 @@ export async function getEmployeesList() {
 export async function getTasks() {
     try {
         //using axios returns array of objects
-        const response = await axios.get(backendUrl + '/dashboard');
+        const response = await axios.get(backendUrl + '/dashboard', {withCredentials:true});
         console.log("Success");
         return response.data
 
@@ -71,7 +106,7 @@ export async function submitTask(data) {
             tasklocation: data.taskLocation,
             taskduedate: data.taskDueDate,
             taskEmployees: data.taskEmployees
-        });
+        }, {withCredentials:true});
         console.log("Success");
 
         return response
@@ -96,7 +131,7 @@ export async function submitEditTask(data) {
             tasklocation: data.taskLocation,
             taskduedate: data.taskDueDate,
             taskEmployees: data.taskEmployees
-        });
+        }, {withCredentials:true});
         console.log("Success");
 
         return response
@@ -116,7 +151,7 @@ export async function deleteTask(taskData) {
         //using axios returns array of objects
         const response = await axios.delete(backendUrl + '/dashboard', {
             data: {taskData}
-        });
+        }, {withCredentials:true});
         console.log("Success");
 
         return response
@@ -138,10 +173,11 @@ export async function submitLogin(data) {
     try {
         console.log(data.email, data.password)
         //using axios returns array of objects
-        const response = await axios.post(backendUrl + '/login', {
+        const response = await axios.post(backendUrl + '/login',{
             email: data.email,
-            password: data.password
-        });
+            password: data.password,
+            
+        },{withCredentials:true});
         console.log("Success");
         console.log(response);
 
@@ -184,45 +220,4 @@ export async function submitSignUp(data) {
         console.log(err)
         return err
     }
-}
-
-
-
-
-//SETTING THE JWT TOKEN IN USER'S BROWSER
-export const authenticate = (data, next) => {
-    // Storing JWT token in user's browser
-    if (typeof window !== "undefined") {
-        localStorage.setItem("jwt", JSON.stringify(data));
-        next();
-    }
-}
-
-//SIGNOUT -> REMOVING JWT TOKEN
-export const signout = () => {
-    // Removing JWT token upon signout
-    if (typeof window !== "undefined") {
-        localStorage.removeItem("jwt");
-
-        axios.get("http://localhost:8000/api/signout")
-            .then(response => {
-                console.log(response.data);
-            })
-            .catch(err => console.log(err));
-    }
-};
-
-
-
-
-//VALIDATION IF USER IS SIGNED IN
-export const isAuthenticated = () => {
-    // Checking if the user is authenticated
-    if (typeof window === "undefined") {
-        return false
-    }
-    if (localStorage.getItem("jwt"))
-        return JSON.parse(localStorage.getItem("jwt"));
-    else
-        return false
 }

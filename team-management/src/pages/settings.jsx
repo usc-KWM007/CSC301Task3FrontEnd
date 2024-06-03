@@ -1,9 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Form } from "react-bootstrap";
 import { Button, ButtonGroup, ToggleButton } from "react-bootstrap"
+import { loggedIn } from "../components/authentication";
+import { useNavigate } from "react-router-dom";
+import NavBarLayout from "../components/NavbarLayout";
 
 function Settings() {
 
+    const navigate = useNavigate();
     const placeHolderData = {
         email: "test@email.com",
         password: "password",
@@ -63,7 +67,24 @@ function Settings() {
         //where we submit to backend
     }
 
+    const [loginLoading, setLoginLoading] = useState(true);
 
+    useEffect(() => {
+        const checkLogin = async () => {
+            const check = await loggedIn();
+            console.log(check);
+            if (!check) {
+                navigate('/login')
+            } else {
+                setLoginLoading(false);
+            }
+        }
+        checkLogin();
+    }, [])
+
+    if (loginLoading) {
+        return <div className="App">Loading...</div>;
+    }
     return (
         <>
             <h1>Settings</h1>
