@@ -86,6 +86,51 @@ export async function submitTask(data) {
     }
 }
 
+export async function submitEditTask(data) {
+    try {
+        //using axios returns array of objects
+        const response = await axios.put(backendUrl + '/editTask', {
+            taskid: data.taskId,
+            taskname: data.taskName,
+            taskdescription: data.taskDescription,
+            tasklocation: data.taskLocation,
+            taskduedate: data.taskDueDate,
+            taskEmployees: data.taskEmployees
+        });
+        console.log("Success");
+
+        return response
+    } catch (err) {
+
+        //if error getting questions show an error
+        /*const error = document.createElement("STRONG");
+        error.innerHTML = err.message;
+        networkError.insertBefore(error, networkError.firstChild);
+        networkError.hidden = false;*/
+        console.log(err)
+    }
+}
+
+export async function deleteTask(taskData) {
+    try {
+        //using axios returns array of objects
+        const response = await axios.delete(backendUrl + '/dashboard', {
+            data: {taskData}
+        });
+        console.log("Success");
+
+        return response
+    } catch (err) {
+
+        //if error getting questions show an error
+        /*const error = document.createElement("STRONG");
+        error.innerHTML = err.message;
+        networkError.insertBefore(error, networkError.firstChild);
+        networkError.hidden = false;*/
+        console.log(err)
+    }
+}
+
 
 
 

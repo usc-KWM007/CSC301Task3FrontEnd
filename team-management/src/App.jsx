@@ -8,6 +8,7 @@ import Settings from './pages/settings.jsx';
 import AddTask from './pages/addTask.jsx';
 import Login from './pages/login.jsx';
 import SignUp from './pages/signUp.jsx';
+import EditTask from './pages/editTask.jsx';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const router = createBrowserRouter(
@@ -19,6 +20,7 @@ const router = createBrowserRouter(
         <Route path = "settings" element={<Settings />} />
         <Route path="login" element={<Login />} />
         <Route path="signUp" element={<SignUp />} />
+        <Route path="editTask" element={<EditTask />} />
     </Route>
   )
 )

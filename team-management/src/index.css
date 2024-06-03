@@ -123,6 +123,14 @@ button:focus-visible {
   margin-bottom: 1em;
 }
 
+#twoRowButtons {
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
 #column49 {
   width: 49%;
 }

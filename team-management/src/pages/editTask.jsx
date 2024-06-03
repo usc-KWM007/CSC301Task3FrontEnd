@@ -2,47 +2,57 @@ import { useState, useEffect } from "react";
 import { Form } from "react-bootstrap";
 import { Button } from "react-bootstrap"
 import Select from 'react-select'
-import { getEmployeesList, submitTask } from '../components/authentication';
-import { useNavigate } from "react-router-dom";
+import { getEmployeesList, submitEditTask } from '../components/authentication';
+import { useNavigate, useLocation } from "react-router-dom";
 
 //Need to collect employeeData from backend in id,label, label being fname,lname
 
+
 let data = [];
-function AddTask() {
+function EditTask() {
     const navigate = useNavigate();
+    const location = useLocation();
+    const originalTaskData = location.state.data;
 
     const [isLoading, setLoading] = useState(true);
     const [options, setOptions] = useState([]);
+    
+    const [formData, setFormData] = useState({
+        taskId: originalTaskData.taskid,
+        taskName: originalTaskData.taskname,
+        taskDueDate: originalTaskData.taskduedate ? originalTaskData.taskduedate.slice(0, -1): "",
+        taskLocation: originalTaskData.tasklocation,
+        taskDescription: originalTaskData.taskdescription,
+    });
 
     async function getData() {
         let holder = []
+        let originalTaskDataAssignedEmployees = [];
         let received = await getEmployeesList()
         for (let i = 0; i < received.length; i++) {
             data.push(received[i])
             holder.push({ value: i + 1, label: `${received[i].firstname} ${received[i].lastname}` })
+            //if (originalTaskData.assignedEmployees.includes(received[i].empid)){
+            if (originalTaskData.assignedEmployees.some(e => e.empid == received[i].empid)){
+                originalTaskDataAssignedEmployees.push({ value: i + 1, label: `${received[i].firstname} ${received[i].lastname}` })
+            }
         }
+        setSelectedEmployees(originalTaskDataAssignedEmployees)
         setOptions(holder);
         setLoading(false)
         return
     }
 
     async function submitData(formData) {
-        console.log(formData)
-        let submission = await submitTask(formData);
+        let submission = await submitEditTask(formData);
         if (submission.status == 200)
             navigate('/dashboard');
     }
 
     useEffect(() => { getData() }, [])
 
-    const [formData, setFormData] = useState({
-        taskName: "",
-        taskDueDate: "",
-        taskLocation: "",
-        taskDescription: "",
-    });
+    const [selectedEmployees, setSelectedEmployees] = useState([]);
 
-    const [selectedEmployees, setSelectedEmployees] = useState([])
 
     const handleEmployeeChange = (event) => {
         setSelectedEmployees(event);
@@ -71,7 +81,7 @@ function AddTask() {
 
     return (
         <>
-            <h1>New Task</h1>
+            <h1>Edit Task</h1>
             <div id="formBody">
                 <Form onSubmit={handleSubmit}>
                     <Form.Group className="mb-3">
@@ -117,4 +127,4 @@ function AddTask() {
     )
 };
 
-export default AddTask
+export default EditTask

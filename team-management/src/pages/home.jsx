@@ -1,16 +1,17 @@
-//import SearchBar from "../components/SearchBar.jsx"
 import TaskCard from '../components/taskCard';
 import { useEffect } from 'react';
 import { useState } from 'react';
-import TaskCardView from '../components/TaskLargeView'
+import TaskLargeView from '../components/TaskLargeView'
 import { Button, Modal } from 'react-bootstrap';
-import { getTasks } from '../components/authentication';
+import { getTasks, deleteTask } from '../components/authentication';
 import SearchBar from '../components/searchBar';
 import SortBar from '../components/sortBar';
+import { useNavigate } from "react-router-dom";
 
 
 
 export default function Home() {
+  const navigate = useNavigate();
 
   const sortingMethods = {
     taskNameAsc: (a, b) => {
@@ -82,11 +83,12 @@ export default function Home() {
   const [isLoading, setLoading] = useState(true);
   const [taskClickState, setTaskClickState] = useState(false);
   const [taskClickData, setTaskClickData] = useState(null);
+  const [refreshVar, setRefreshVar] = useState(0);
 
   const [tasks, setTasks] = useState([]);
   const [allTasks, setAllTasks] = useState([]);
   const [searchWord, setSearchWord] = useState('');
-  const [sortValue, setSortValue] = useState('');
+  const [sortValue, setSortValue] = useState(''); //set from local storage
   
   async function getData() {
     let data = await getTasks();
@@ -96,7 +98,7 @@ export default function Home() {
     setLoading(false)
   }
 
-  useEffect(() => { getData() },[])
+  useEffect(() => { getData() },[refreshVar])
 
   const updateSortMethod = (value) => {
     setSortValue(value)
@@ -136,6 +138,17 @@ export default function Home() {
     setTasks(filteredTasks);
   }
 
+  const editTask = () => {
+    navigate('/editTask',{state:{data:taskClickData}});
+  }
+
+  async function deleteTaskFunc() {
+    setTaskClickState(false);
+    setLoading(true);
+    await deleteTask(taskClickData.taskid);
+    setRefreshVar(oldVar => oldVar +1);
+  }
+
   const RenderCards = () => {
 
     return (
@@ -161,10 +174,11 @@ export default function Home() {
       <Modal show={taskClickState}>
         {
           <div id='taskLargeView'>
-            <TaskCardView task={taskClickData} />
-            <div>
+            <TaskLargeView task={taskClickData} />
+            <div id="twoRowButtons">
               <Button onClick={() => setTaskClickState(false)}>Close</Button>
-              <Button onClick={() => setTaskClickState(false)}>Edit</Button>
+              <Button onClick={() => editTask()}>Edit</Button>
+              <Button onClick={() => deleteTaskFunc()}>Delete</Button>
             </div>
           </div>
 
