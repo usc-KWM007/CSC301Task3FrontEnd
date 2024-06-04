@@ -9,9 +9,31 @@ import { useNavigate, useLocation } from "react-router-dom";
 
 
 let data = [];
+let dataExists = [];
+
 function EditTask() {
+
     const navigate = useNavigate();
     const location = useLocation();
+
+    try{ //check if data exists to prevent user from going to editTask url
+        if(location.state.data){
+            dataExists.push(true)
+        }
+    } catch{
+        dataExists.push(false)
+
+    }
+
+    if (dataExists[dataExists.length-1] == false){ //if data does not exist send user back to dashboard
+        console.log(dataExists)
+        useEffect(() => { navigate('/dashboard') }, [])
+        
+        return <div className="App">Loading...</div>; 
+    }
+
+    
+    
     const originalTaskData = location.state.data;
 
     const [isLoading, setLoading] = useState(true);
@@ -49,9 +71,9 @@ function EditTask() {
             navigate('/dashboard');
     }
 
-    useEffect(() => { getData() }, [])
-
     const [selectedEmployees, setSelectedEmployees] = useState([]);
+
+    useEffect(() => { getData() }, [])
 
 
     const handleEmployeeChange = (event) => {

@@ -1,16 +1,16 @@
-import { useEffect, useState } from "react";
-import { Form } from "react-bootstrap";
-import { Button, ButtonGroup, ToggleButton } from "react-bootstrap"
-import { loggedIn } from "../components/authentication";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import NavBarLayout from "../components/NavbarLayout";
 import { signOut } from "../components/authentication";
+import { useContext } from "react";
+import UserContext from '../components/userContext';
 
 function SignOut() {
+    const { logoutUser } = useContext(UserContext);
     const navigate = useNavigate();
 
     async function signingOut(){
         await signOut()
+        logoutUser()
         navigate('/login')
     }
     
@@ -20,7 +20,7 @@ function SignOut() {
 
     return (
         <>
-            <h1>We are signing you out</h1>
+            <h1>Signing you out</h1>
         </>
     )
 };

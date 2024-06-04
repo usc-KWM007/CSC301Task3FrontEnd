@@ -65,6 +65,7 @@ function AddTask() {
         submitData(formData);
     }
 
+
     if (isLoading) {
         return <div className="App">Loading...</div>;
     }

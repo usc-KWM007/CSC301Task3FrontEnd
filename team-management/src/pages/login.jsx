@@ -1,20 +1,22 @@
 import { useState } from "react";
 import { Form } from "react-bootstrap";
 import { Button } from "react-bootstrap";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { submitLogin } from "../components/authentication"
+import { useContext } from "react";
+import UserContext from '../components/userContext';
 
 
 function Login() {
     const navigate = useNavigate();
+    const { loginUser } = useContext(UserContext);
 
-    async function submitData(formData){
+    async function submitData(formData) {
         let submission = await submitLogin(formData)
-            console.log(submission)
-            if(submission.status == 200)
-                localStorage.setItem("loginStatus", true);
-                navigate('/dashboard');
+        console.log(submission)
+        if (submission.status == 200)
+            loginUser()
+            navigate('/dashboard');
     }
 
     const [formData, setFormData] = useState({
@@ -31,7 +33,7 @@ function Login() {
         console.log(formData);
         //where we submit to backend
         submitData(formData);
-        
+
     }
 
 

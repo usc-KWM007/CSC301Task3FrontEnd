@@ -1,13 +1,8 @@
 import { useState } from "react";
 import { Form } from "react-bootstrap";
 import { Button } from "react-bootstrap";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { submitSignUp } from "../components/authentication"
-
-const signUpUrl = 'http://127.0.0.1:3000/signup';
-
-
 
 function SignUp() {
     const navigate = useNavigate();
@@ -37,7 +32,6 @@ function SignUp() {
         submitData(formData)
         
     }
-
 
     return (
         <>

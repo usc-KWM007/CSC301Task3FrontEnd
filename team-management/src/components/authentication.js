@@ -29,16 +29,12 @@ export async function loggedIn() {
         console.log("Success");
         if (response.status==200){
             console.log("SIGNED IN")
-            localStorage.setItem("loginStatus", true);
             return true
         }
-        else{
-            localStorage.setItem("loginStatus", false);
-            
+        else{            
             return false
         }
     } catch (err) {
-        localStorage.setItem("loginStatus", false);
         console.log(err)
         return false
     }
@@ -50,10 +46,8 @@ export async function signOut() {
         const response = await axios.get(backendUrl + '/signOut', {withCredentials:true});
         console.log("Success");
         console.log("SIGNED OUT")
-        localStorage.setItem("loginStatus", false);
         return
     } catch (err) {
-        localStorage.setItem("loginStatus", false);
         console.log(err)
         return
     }

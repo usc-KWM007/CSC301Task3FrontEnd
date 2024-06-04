@@ -8,9 +8,8 @@ import SearchBar from '../components/searchBar';
 import SortBar from '../components/sortBar';
 import { useNavigate } from "react-router-dom";
 
-
-
 export default function Home() {
+
   const navigate = useNavigate();
 
   const sortingMethods = {
@@ -164,22 +163,8 @@ export default function Home() {
     );
   };
 
-  const [loginLoading, setLoginLoading] = useState(true);
 
-    useEffect(() => {
-        const checkLogin = async () => {
-            const check = await loggedIn();
-            console.log(check);
-            if (!check) {
-                navigate('/login')
-            } else {
-                setLoginLoading(false);
-            }
-        }
-        checkLogin();
-    }, [])
-
-    if (loginLoading || isLoading) {
+    if (isLoading) {
         return <div className="App">Loading...</div>;
     }
 
