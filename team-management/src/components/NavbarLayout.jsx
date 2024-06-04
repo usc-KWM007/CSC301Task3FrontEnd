@@ -10,8 +10,10 @@ import UserContext from './userContext';
 
 
 function NavBarLayout() {
+    //variable for if the user is logged in
     const { user } = useContext(UserContext);
-//if user is logged in
+
+    //if user is logged in
     if (user) {
         return (
             <>
@@ -23,16 +25,12 @@ function NavBarLayout() {
                             <Nav className="me-auto">
                                 <Nav.Link href="/dashboard">Home</Nav.Link>
                                 <Nav.Link href="/addTask">Add Task</Nav.Link>
-
-
                             </Nav>
                         </Navbar.Collapse>
-
                         <Navbar.Collapse id="navbar-nav" className='justify-content-end'>
                             <Nav>
-                                <Nav.Link href="/settings">{user.toString()}</Nav.Link>
+                                <Nav.Link href="/settings">Settings</Nav.Link>
                                 <Nav.Link href="/signOut">Sign Out</Nav.Link>
-                                <Nav.Link href="/signUp">Sign Up</Nav.Link>
                             </Nav>
                         </Navbar.Collapse>
                     </Container>
@@ -41,6 +39,7 @@ function NavBarLayout() {
             </>
         )
     }
+    //if the user is not logged in
     return (
         <>
             <Navbar expand="sm" className="bg-primary-subtle">
@@ -48,18 +47,8 @@ function NavBarLayout() {
                     <Navbar.Text className='navbar-brand'>Team Management</Navbar.Text>
                     <Navbar.Toggle aria-controls="navbar-nav" />
                     <Navbar.Collapse id="navbar-nav" className='justify-content-end'>
-                        <Nav className="me-auto">
-                            <Nav.Link href="/dashboard">Home</Nav.Link>
-                            <Nav.Link href="/addTask">Add Task</Nav.Link>
-
-
-                        </Nav>
-                    </Navbar.Collapse>
-
-                    <Navbar.Collapse id="navbar-nav" className='justify-content-end'>
                         <Nav>
-                            <Nav.Link href="/settings">{user.toString()}</Nav.Link>
-                            <Nav.Link href="/signOut">Sign Out</Nav.Link>
+                            <Nav.Link href="/login">Login </Nav.Link>
                             <Nav.Link href="/signUp">Sign Up</Nav.Link>
                         </Nav>
                     </Navbar.Collapse>

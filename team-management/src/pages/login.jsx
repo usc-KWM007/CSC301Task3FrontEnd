@@ -12,11 +12,15 @@ function Login() {
     const { loginUser } = useContext(UserContext);
 
     async function submitData(formData) {
-        let submission = await submitLogin(formData)
-        console.log(submission)
-        if (submission.status == 200)
+        let response = await submitLogin(formData)
+        console.log(response)
+        if (response.status == 200){
             loginUser()
             navigate('/dashboard');
+        }  
+        else{
+            console.log('Not allowed')
+        }
     }
 
     const [formData, setFormData] = useState({
@@ -44,7 +48,7 @@ function Login() {
                 <Form onSubmit={handleSubmit}>
                     <Form.Group className="mb-3">
                         <Form.Label>Email</Form.Label>
-                        <Form.Control type="email" name="email" placeholder="Enter task email" required value={formData.email} onChange={handleChange} />
+                        <Form.Control type="email" name="email" placeholder="Enter email" required value={formData.email} onChange={handleChange} />
                     </Form.Group>
 
                     <Form.Group className="mb-3">

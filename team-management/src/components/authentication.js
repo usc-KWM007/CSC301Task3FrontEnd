@@ -91,6 +91,51 @@ export async function getTasks() {
     }
 }
 
+export async function getAccountData() {
+    try {
+        //using axios returns array of objects
+        const response = await axios.get(backendUrl + '/settings', {withCredentials:true});
+        console.log("Success");
+        return response.data
+
+
+    } catch (err) {
+        //if error getting questions show an error
+        /*const error = document.createElement("STRONG");
+        error.innerHTML = err.message;
+        networkError.insertBefore(error, networkError.firstChild);
+        networkError.hidden = false;*/
+        console.log(err)
+        return err
+    }
+}
+
+export async function saveAccountChanges(data) {
+    try {
+        //using axios returns array of objects
+        const response = await axios.put(backendUrl + '/settings', {
+            email: data.email,
+            password: data.password,
+            firstname: data.firstName,
+            lastname: data.lastName,
+            role: data.role
+        }, {withCredentials:true});
+
+        console.log("Success");
+        return response
+
+
+    } catch (err) {
+        //if error getting questions show an error
+        /*const error = document.createElement("STRONG");
+        error.innerHTML = err.message;
+        networkError.insertBefore(error, networkError.firstChild);
+        networkError.hidden = false;*/
+        console.log(err)
+        return err
+    }
+}
+
 export async function submitTask(data) {
     try {
         //using axios returns array of objects
@@ -185,6 +230,7 @@ export async function submitLogin(data) {
         networkError.insertBefore(error, networkError.firstChild);
         networkError.hidden = false;*/
         console.log(err)
+        return err
     }
 }
 

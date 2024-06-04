@@ -28,38 +28,47 @@ function App() {
     setUser(false);
   };
 
+  //if user does not have a default sort value
+  if (!localStorage.getItem("defaultSortOrder")) {
+    localStorage.setItem("defaultSortOrder","taskDateAsc");
+  }
+
+  if (!localStorage.getItem("theme")) {
+    localStorage.setItem("theme","light");
+  }
+
   function RequireAuth({ children }) {
-    
+
     if (!user) {
       // Redirect to login if not logged in
       return <Navigate to="/login" />;
     }
-  
+
     return children;
   }
-    
+
 
   const router = createBrowserRouter(
 
     createRoutesFromElements(
-      
-        <Route path="/" element={<NavbarLayout />}>
-          <Route path="/" element={<RequireAuth><Home /></RequireAuth>} />
-          <Route path="dashboard" element={<RequireAuth><Home /></RequireAuth>}/>
-          <Route path="addTask" element={<RequireAuth><AddTask /></RequireAuth>} />
-          <Route path="settings" element={<RequireAuth><Settings /></RequireAuth>} />
-          <Route path="login" element={<Login />} />
-          <Route path="signUp" element={<SignUp />} />
-          <Route path="editTask" element={<RequireAuth><EditTask /></RequireAuth>} />
-          <Route path="signOut" element={<SignOut />} />
-        </Route>
+
+      <Route path="/" element={<NavbarLayout />}>
+        <Route path="/" element={<RequireAuth><Home /></RequireAuth>} />
+        <Route path="dashboard" element={<RequireAuth><Home /></RequireAuth>} />
+        <Route path="addTask" element={<RequireAuth><AddTask /></RequireAuth>} />
+        <Route path="settings" element={<RequireAuth><Settings /></RequireAuth>} />
+        <Route path="login" element={<Login />} />
+        <Route path="signUp" element={<SignUp />} />
+        <Route path="editTask" element={<RequireAuth><EditTask /></RequireAuth>} />
+        <Route path="signOut" element={<SignOut />} />
+      </Route>
     )
-  
+
   )
 
   return (
     <UserContext.Provider value={{ user, loginUser, logoutUser }}>
-    <RouterProvider router={router} />
+      <RouterProvider router={router} />
     </UserContext.Provider>
   );
 }

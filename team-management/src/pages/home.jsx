@@ -79,6 +79,8 @@ export default function Home() {
 
   }
 
+  
+
   const [isLoading, setLoading] = useState(true);
   const [taskClickState, setTaskClickState] = useState(false);
   const [taskClickData, setTaskClickData] = useState(null);
@@ -87,36 +89,37 @@ export default function Home() {
   const [tasks, setTasks] = useState([]);
   const [allTasks, setAllTasks] = useState([]);
   const [searchWord, setSearchWord] = useState('');
-  const [sortValue, setSortValue] = useState(''); //set from local storage
+  const defaultSortingOrder=localStorage.getItem("defaultSortOrder"); 
+  const [sortValue, setSortValue] = useState(defaultSortingOrder); 
   
   async function getData() {
     let data = await getTasks();
-   
+    data.sort(updateSortMethod(sortValue, data))
     setAllTasks(data);
     setTasks(data);
     setLoading(false)
   }
 
-  useEffect(() => { getData() },[refreshVar])
+  useEffect(() => { getData(); },[refreshVar])
 
-  const updateSortMethod = (value) => {
+  const updateSortMethod = (value, arr=tasks) => {
     setSortValue(value)
 
-    switch (value) {
+    switch (arr, value) {
       case "taskNameAsc":
-        tasks.sort(sortingMethods.taskNameAsc)
+        arr.sort(sortingMethods.taskNameAsc)
         break;
       case "taskNameDsc":
-        tasks.sort(sortingMethods.taskNameDsc)
+        arr.sort(sortingMethods.taskNameDsc)
         break;
       case "taskDateAsc":
-        tasks.sort(sortingMethods.taskDateAsc)
+        arr.sort(sortingMethods.taskDateAsc)
         break;
       case "taskDateDsc":
-        tasks.sort(sortingMethods.taskDateDsc)
+        arr.sort(sortingMethods.taskDateDsc)
         break;
       case "taskOverDue":
-        tasks.sort(sortingMethods.taskOverDue)
+        arr.sort(sortingMethods.taskOverDue)
         break;
       default:
         break;
@@ -147,6 +150,7 @@ export default function Home() {
     await deleteTask(taskClickData.taskid);
     setRefreshVar(oldVar => oldVar +1);
   }
+  
 
   const RenderCards = () => {
 
@@ -191,7 +195,7 @@ export default function Home() {
           <SearchBar keyword={searchWord} onChange={updateSearchWord} />
         </div>
         <div id = "column20">
-          <SortBar onChange={updateSortMethod} />
+          <SortBar defaultValue = {defaultSortingOrder} onChange={updateSortMethod} />
         </div>
       </div>
       <RenderCards />
