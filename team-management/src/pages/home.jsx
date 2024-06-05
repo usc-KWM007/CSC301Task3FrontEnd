@@ -1,9 +1,8 @@
 import TaskCard from '../components/taskCard';
-import { useEffect } from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import TaskLargeView from '../components/TaskLargeView'
-import { Button, Modal } from 'react-bootstrap';
-import { getTasks, deleteTask, loggedIn } from '../components/authentication';
+import { Button, Modal, Alert } from 'react-bootstrap';
+import { getTasks, deleteTask } from '../components/authentication';
 import SearchBar from '../components/searchBar';
 import SortBar from '../components/sortBar';
 import { useNavigate } from "react-router-dom";
@@ -79,30 +78,43 @@ export default function Home() {
 
   }
 
-  
-
   const [isLoading, setLoading] = useState(true);
   const [taskClickState, setTaskClickState] = useState(false);
   const [taskClickData, setTaskClickData] = useState(null);
-  const [refreshVar, setRefreshVar] = useState(0);
+  const [refreshVar, setRefreshVar] = useState(false);
+
+  const [alertShow, setAlertShow] = useState(true);
+  const [deleteAlertShow, setDeleteAlertShow] = useState(false);
+  const [deleteErrorCode, setDeleteErrorCode] = useState("");
+  const [submissionErrorCode, setSubmissionErrorCode] = useState("");
+  
 
   const [tasks, setTasks] = useState([]);
   const [allTasks, setAllTasks] = useState([]);
   const [searchWord, setSearchWord] = useState('');
-  const defaultSortingOrder=localStorage.getItem("defaultSortOrder"); 
-  const [sortValue, setSortValue] = useState(defaultSortingOrder); 
-  
+  const defaultSortingOrder = localStorage.getItem("defaultSortOrder");
+  const [sortValue, setSortValue] = useState(defaultSortingOrder);
+
   async function getData() {
-    let data = await getTasks();
+    const submission = await getTasks();
+
+    if (submission.status != 200) {
+      setSubmissionErrorCode(submission.response.data)
+      setAlertShow(true)
+      setLoading(false)
+      return
+    }
+    setAlertShow(false)
+    let data = submission.data
     data.sort(updateSortMethod(sortValue, data))
     setAllTasks(data);
     setTasks(data);
     setLoading(false)
   }
 
-  useEffect(() => { getData(); },[refreshVar])
+  useEffect(() => { getData(); }, [refreshVar])
 
-  const updateSortMethod = (value, arr=tasks) => {
+  const updateSortMethod = (value, arr = tasks) => {
     setSortValue(value)
 
     switch (arr, value) {
@@ -141,16 +153,21 @@ export default function Home() {
   }
 
   const editTask = () => {
-    navigate('/editTask',{state:{data:taskClickData}});
+    navigate('/editTask', { state: { data: taskClickData } });
   }
 
   async function deleteTaskFunc() {
+    const submission = await deleteTask(taskClickData.taskid);
+    if (submission.status != 200) {
+      setDeleteErrorCode(submission.response.data)
+      setDeleteAlertShow(true)
+      return
+  }
     setTaskClickState(false);
     setLoading(true);
-    await deleteTask(taskClickData.taskid);
-    setRefreshVar(oldVar => oldVar +1);
+    setRefreshVar(oldVar => !oldVar);
   }
-  
+
 
   const RenderCards = () => {
 
@@ -168,9 +185,22 @@ export default function Home() {
   };
 
 
-    if (isLoading) {
-        return <div className="App">Loading...</div>;
-    }
+  if (isLoading) {
+    return <div className="App">Loading...</div>;
+  }
+
+  if (alertShow) {
+    return (
+      <>
+        <Alert variant="danger">
+          <Alert.Heading>Error Getting Tasks</Alert.Heading>
+          <p>
+            {submissionErrorCode}
+          </p>
+        </Alert>
+      </>
+    )
+  }
 
   return (
     <>
@@ -178,6 +208,14 @@ export default function Home() {
         {
           <div id='taskLargeView'>
             <TaskLargeView task={taskClickData} />
+            <>
+              {deleteAlertShow && <Alert variant="danger" onClose={() => setDeleteAlertShow(false)} dismissible>
+                <Alert.Heading>Error Deleting Task</Alert.Heading>
+                <p>
+                  {deleteErrorCode}
+                </p>
+              </Alert>}
+            </>
             <div id="twoRowButtons">
               <Button onClick={() => setTaskClickState(false)}>Close</Button>
               <Button onClick={() => editTask()}>Edit</Button>
@@ -191,11 +229,11 @@ export default function Home() {
 
       <h1>Dashboard</h1>
       <div id="twoRow">
-        <div id = "column50">
+        <div id="column50">
           <SearchBar keyword={searchWord} onChange={updateSearchWord} />
         </div>
-        <div id = "column20">
-          <SortBar defaultValue = {defaultSortingOrder} onChange={updateSortMethod} />
+        <div id="column20">
+          <SortBar defaultValue={defaultSortingOrder} onChange={updateSortMethod} />
         </div>
       </div>
       <RenderCards />

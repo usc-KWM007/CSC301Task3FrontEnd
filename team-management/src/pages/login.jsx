@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { Form } from "react-bootstrap";
-import { Button } from "react-bootstrap";
+import { Button, Form, Alert } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { submitLogin } from "../components/authentication"
 import { useContext } from "react";
@@ -12,21 +11,33 @@ function Login() {
     const { loginUser } = useContext(UserContext);
 
     async function submitData(formData) {
-        let response = await submitLogin(formData)
-        console.log(response)
-        if (response.status == 200){
-            loginUser()
-            navigate('/dashboard');
-        }  
-        else{
-            console.log('Not allowed')
+        const submission = await submitLogin(formData)
+        if (!("status" in submission) && !("response" in submission)){
+            setSubmissionErrorCode("Failed to connect to server, come back again later, sorry for the inconvenience")
+            setAlertShow(true)
+            return
         }
+
+        if (submission.status != 200) {
+            setSubmissionErrorCode(submission.response.data)
+            setAlertShow(true)
+            return
+        }
+        
+        loginUser()
+        navigate('/dashboard');
+
     }
+
 
     const [formData, setFormData] = useState({
         email: "",
         password: "",
     });
+
+    const [alertShow, setAlertShow] = useState(false);
+
+    const [submissionErrorCode, setSubmissionErrorCode] = useState("");
 
     const handleChange = (event) => {
         setFormData({ ...formData, [event.target.name]: event.target.value });
@@ -34,9 +45,7 @@ function Login() {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        console.log(formData);
-        //where we submit to backend
-        submitData(formData);
+        submitData(formData)
 
     }
 
@@ -55,6 +64,13 @@ function Login() {
                         <Form.Label>Password</Form.Label>
                         <Form.Control type="password" autoComplete="on" placeholder="Password" name="password" required value={formData.password} onChange={handleChange} />
                     </Form.Group>
+
+                    {alertShow && <Alert variant="danger" onClose={() => setAlertShow(false)} dismissible>
+                        <Alert.Heading>Error Logging in</Alert.Heading>
+                        <p>
+                            {submissionErrorCode}
+                        </p>
+                    </Alert>}
 
                     <div id="formButton">
                         <Button variant="primary" type="submit">

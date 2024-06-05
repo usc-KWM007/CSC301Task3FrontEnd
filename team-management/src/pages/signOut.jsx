@@ -14,9 +14,7 @@ function SignOut() {
         navigate('/login')
     }
     
-
     useEffect(() => {signingOut()}, [])
-
 
     return (
         <>

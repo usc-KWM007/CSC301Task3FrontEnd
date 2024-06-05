@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
-import { Form } from "react-bootstrap";
-import { Button } from "react-bootstrap"
+import { Form, Button, Alert } from "react-bootstrap";
 import Select from 'react-select'
 import { getEmployeesList, submitTask } from '../components/authentication';
 import { useNavigate } from "react-router-dom";
@@ -14,9 +13,25 @@ function AddTask() {
     const [isLoading, setLoading] = useState(true);
     const [options, setOptions] = useState([]);
 
+    const [alertShow, setAlertShow] = useState(true);
+    const [employeeErrorCode, setEmployeeErrorCode] = useState("");
+
+    const [addAlertShow, setAddAlertShow] = useState(false);
+    const [addErrorCode, setAddErrorCode] = useState("");
+
     async function getData() {
         let holder = []
-        let received = await getEmployeesList()
+        let submission = await getEmployeesList()
+
+        if (submission.status != 200) {
+            setEmployeeErrorCode(submission.response.data)
+            setAlertShow(true)
+            setLoading(false)
+            return
+        }
+        setAlertShow(false)
+
+        let received = submission.data;
         for (let i = 0; i < received.length; i++) {
             data.push(received[i])
             holder.push({ value: i + 1, label: `${received[i].firstname} ${received[i].lastname}` })
@@ -29,8 +44,13 @@ function AddTask() {
     async function submitData(formData) {
         console.log(formData)
         let submission = await submitTask(formData);
-        if (submission.status == 200)
-            navigate('/dashboard');
+
+        if (submission.status != 200) {
+            setAddErrorCode(submission.response.data)
+            setAddAlertShow(true)
+            return
+        }
+        navigate('/dashboard');
     }
 
     useEffect(() => { getData() }, [])
@@ -70,13 +90,26 @@ function AddTask() {
         return <div className="App">Loading...</div>;
     }
 
+    if (alertShow) {
+        return (
+            <>
+                <Alert variant="danger">
+                    <Alert.Heading>Error Getting Employee List</Alert.Heading>
+                    <p>
+                        {employeeErrorCode}
+                    </p>
+                </Alert>
+            </>
+        )
+    }
+
     return (
         <>
             <h1>New Task</h1>
             <div id="formBody">
                 <Form onSubmit={handleSubmit}>
                     <Form.Group className="mb-3">
-                        <Form.Label>Task Name</Form.Label>
+                        <Form.Label>Task Name *</Form.Label>
                         <Form.Control type="text" name="taskName" placeholder="Enter task name" required value={formData.taskName} onChange={handleChange} />
                     </Form.Group>
 
@@ -97,7 +130,7 @@ function AddTask() {
                     </div>
 
                     <Form.Group className="mb-3">
-                        <Form.Label>Task Description</Form.Label>
+                        <Form.Label>Task Description *</Form.Label>
                         <Form.Control as="textarea" rows="4" name="taskDescription" placeholder="Enter task description" required value={formData.taskDescription} onChange={handleChange} />
                     </Form.Group>
 
@@ -105,6 +138,13 @@ function AddTask() {
                         <Form.Label>Assigned Employees</Form.Label>
                         <Select options={options} value={selectedEmployees} onChange={handleEmployeeChange} isMulti={true} />
                     </Form.Group>
+
+                    {addAlertShow && <Alert variant="danger" onClose={() => setAddAlertShow(false)} dismissible>
+                        <Alert.Heading>Error Adding Task</Alert.Heading>
+                        <p>
+                            {addErrorCode}
+                        </p>
+                    </Alert>}
 
                     <div id="formButton">
                         <Button variant="primary" type="submit">

@@ -16,7 +16,13 @@ import UserContext from './components/userContext.jsx';
 //login check request
 const login = await loggedIn()
 
+
+
 function App() {
+  //error handle connecting to backend
+  if (login == null){
+    return <h1>Failed to connect to server, come back again later, sorry for the inconvenience</h1>
+  }
 
   const [user, setUser] = useState(login);
 

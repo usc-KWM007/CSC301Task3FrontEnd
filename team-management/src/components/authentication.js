@@ -25,18 +25,15 @@ export const signin = user => {
 export async function loggedIn() {
     try {
         //using axios returns array of objects
-        const response = await axios.get(backendUrl + '/loggedIn', {withCredentials:true});
-        console.log("Success");
-        if (response.status==200){
-            console.log("SIGNED IN")
+        const response = await axios.get(backendUrl + '/loggedIn', {withCredentials:true, validateStatus: () => true});
+        if (response.status==200 && response.data == "User is authenticated"){
             return true
         }
         else{            
             return false
         }
     } catch (err) {
-        console.log(err)
-        return false
+        return null
     }
 }
 
@@ -44,29 +41,19 @@ export async function signOut() {
     try {
         //using axios returns array of objects
         const response = await axios.get(backendUrl + '/signOut', {withCredentials:true});
-        console.log("Success");
-        console.log("SIGNED OUT")
-        return
+        return response
     } catch (err) {
         console.log(err)
-        return
+        return err
     }
 }
 
 export async function getEmployeesList() {
     try {
         //using axios returns array of objects
-        const response = await axios.get(backendUrl + '/addTask', {withCredentials:true});
-        console.log("Success");
-        return response.data
-
-
+        const response = await axios.get(backendUrl + '/getEmployees', {withCredentials:true});
+        return response
     } catch (err) {
-        //if error getting questions show an error
-        /*const error = document.createElement("STRONG");
-        error.innerHTML = err.message;
-        networkError.insertBefore(error, networkError.firstChild);
-        networkError.hidden = false;*/
         console.log(err)
         return err
     }
@@ -76,16 +63,8 @@ export async function getTasks() {
     try {
         //using axios returns array of objects
         const response = await axios.get(backendUrl + '/dashboard', {withCredentials:true});
-        console.log("Success");
-        return response.data
-
-
+        return response
     } catch (err) {
-        //if error getting questions show an error
-        /*const error = document.createElement("STRONG");
-        error.innerHTML = err.message;
-        networkError.insertBefore(error, networkError.firstChild);
-        networkError.hidden = false;*/
         console.log(err)
         return err
     }
@@ -96,15 +75,8 @@ export async function getAccountData() {
         //using axios returns array of objects
         const response = await axios.get(backendUrl + '/settings', {withCredentials:true});
         console.log("Success");
-        return response.data
-
-
+        return response
     } catch (err) {
-        //if error getting questions show an error
-        /*const error = document.createElement("STRONG");
-        error.innerHTML = err.message;
-        networkError.insertBefore(error, networkError.firstChild);
-        networkError.hidden = false;*/
         console.log(err)
         return err
     }
@@ -120,17 +92,8 @@ export async function saveAccountChanges(data) {
             lastname: data.lastName,
             role: data.role
         }, {withCredentials:true});
-
-        console.log("Success");
         return response
-
-
     } catch (err) {
-        //if error getting questions show an error
-        /*const error = document.createElement("STRONG");
-        error.innerHTML = err.message;
-        networkError.insertBefore(error, networkError.firstChild);
-        networkError.hidden = false;*/
         console.log(err)
         return err
     }
@@ -146,17 +109,11 @@ export async function submitTask(data) {
             taskduedate: data.taskDueDate,
             taskEmployees: data.taskEmployees
         }, {withCredentials:true});
-        console.log("Success");
 
         return response
     } catch (err) {
-
-        //if error getting questions show an error
-        /*const error = document.createElement("STRONG");
-        error.innerHTML = err.message;
-        networkError.insertBefore(error, networkError.firstChild);
-        networkError.hidden = false;*/
         console.log(err)
+        return err
     }
 }
 
@@ -171,17 +128,10 @@ export async function submitEditTask(data) {
             taskduedate: data.taskDueDate,
             taskEmployees: data.taskEmployees
         }, {withCredentials:true});
-        console.log("Success");
-
         return response
     } catch (err) {
-
-        //if error getting questions show an error
-        /*const error = document.createElement("STRONG");
-        error.innerHTML = err.message;
-        networkError.insertBefore(error, networkError.firstChild);
-        networkError.hidden = false;*/
         console.log(err)
+        return err
     }
 }
 
@@ -195,20 +145,15 @@ export async function deleteTask(taskData) {
 
         return response
     } catch (err) {
-
-        //if error getting questions show an error
-        /*const error = document.createElement("STRONG");
-        error.innerHTML = err.message;
-        networkError.insertBefore(error, networkError.firstChild);
-        networkError.hidden = false;*/
         console.log(err)
+        return err
     }
 }
 
 
 
 
-export async function submitLogin(data) {
+export async function submitLogin(data) {  
     try {
         console.log(data.email, data.password)
         //using axios returns array of objects
@@ -217,18 +162,8 @@ export async function submitLogin(data) {
             password: data.password,
             
         },{withCredentials:true});
-        console.log("Success");
-        console.log(response);
-
         return response
-
-
     } catch (err) {
-        //if error getting questions show an error
-        /*const error = document.createElement("STRONG");
-        error.innerHTML = err.message;
-        networkError.insertBefore(error, networkError.firstChild);
-        networkError.hidden = false;*/
         console.log(err)
         return err
     }
@@ -238,7 +173,6 @@ export async function submitLogin(data) {
 //SIGNUP
 export async function submitSignUp(data) {
     try {
-        //using axios returns array of objects
         const response = await axios.post(backendUrl + '/signup', {
             email: data.email,
             password: data.password,
@@ -246,17 +180,8 @@ export async function submitSignUp(data) {
             lastname: data.lastName,
             role: data.role
         });
-        console.log("Success");
-        console.log(response);
         return response
-
-
     } catch (err) {
-        //if error getting questions show an error
-        /*const error = document.createElement("STRONG");
-        error.innerHTML = err.message;
-        networkError.insertBefore(error, networkError.firstChild);
-        networkError.hidden = false;*/
         console.log(err)
         return err
     }
