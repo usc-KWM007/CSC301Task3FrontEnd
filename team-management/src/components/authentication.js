@@ -83,9 +83,10 @@ export async function getAccountData() {
 
 export async function saveAccountChanges(data) {
     try {
+        //const email = data.email
         //using axios returns array of objects
         const response = await axios.put(backendUrl + '/settings', {
-            email: data.email,
+            email: data.email.toLowerCase(),
             password: data.password,
             firstname: data.firstName,
             lastname: data.lastName,
@@ -147,6 +148,18 @@ export async function deleteTask(taskData) {
     }
 }
 
+export async function deleteAccount(email) {
+    try {
+        //using axios returns array of objects
+        const response = await axios.delete(backendUrl + '/settings', {
+            data: {email}
+        }, {withCredentials:true});
+        return response
+    } catch (err) {
+        console.log(err)
+        return err
+    }
+}
 
 
 
@@ -154,7 +167,7 @@ export async function submitLogin(data) {
     try {
         //using axios returns array of objects
         const response = await axios.post(backendUrl + '/login',{
-            email: data.email,
+            email: data.email.toLowerCase(),
             password: data.password,
             
         },{withCredentials:true});
@@ -170,7 +183,7 @@ export async function submitLogin(data) {
 export async function submitSignUp(data) {
     try {
         const response = await axios.post(backendUrl + '/signup', {
-            email: data.email,
+            email: data.email.toLowerCase(),
             password: data.password,
             firstname: data.firstName,
             lastname: data.lastName,

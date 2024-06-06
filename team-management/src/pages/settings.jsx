@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Button, ButtonGroup, ToggleButton, Form, Alert } from "react-bootstrap"
 import { useNavigate } from "react-router-dom";
-import { getAccountData, saveAccountChanges } from "../components/authentication";
+import { getAccountData, saveAccountChanges, deleteAccount } from "../components/authentication";
 import PasswordStrengthBar from 'react-password-strength-bar';
 import { getTheme, setTheme, getColorSchemeTheme } from "../components/themeManager";
 
@@ -15,6 +15,8 @@ function Settings() {
     const [accountErrorCode, setAccountErrorCode] = useState("");
     const [submitAlertShow, setSubmitAlertShow] = useState(false);
     const [submitErrorCode, setSubmitErrorCode] = useState("");
+    const [deleteAlertShow, setDeleteAlertShow] = useState(false);
+    const [deleteErrorCode, setDeleteErrorCode] = useState("");
 
     const themeOptions = [
         { name: 'Light', value: '1', code: "light_theme" },
@@ -37,6 +39,24 @@ function Settings() {
         lastName: "",
         role: ""
     });
+
+    async function deleteSubmit() {
+        const email = formData.email
+        const submission = await deleteAccount(email)
+        if (!("status" in submission) && !("response" in submission)){
+            setDeleteErrorCode("Failed to connect to server, come back again later, sorry for the inconvenience")
+            deleteAlertShow(true)
+            return
+        }
+        if (submission.status != 200) {
+            setDeleteErrorCode(submission.response.data)
+            setDeleteAlertShow(true)
+            return
+        }
+        
+        navigate('/signOut');
+
+    }
 
     async function getData() {
         let submission = await getAccountData()
@@ -66,7 +86,6 @@ function Settings() {
         console.log(formData)
         console.log(passwordStrength)
         if (passwordStrength <= 1 && formData.password != "") {
-            console.log("Here?")
             setInvalidPasswordAlertShow(true)
             return
         }
@@ -218,7 +237,7 @@ function Settings() {
                         ))}
                     </ButtonGroup>
                     <h3 id="formCenterText">Default Order for Tasks</h3>
-                    <ButtonGroup style={{ marginBottom: "4rem" }}>
+                    <ButtonGroup style={{ marginBottom: "2rem" }}>
                         {defaultOrderOptions.map((defaultOrder, idx) => (
                             <ToggleButton
                                 key={idx}
@@ -235,7 +254,20 @@ function Settings() {
                         ))}
                     </ButtonGroup>
                 </div>
+                <h2 id="formCenterText">Delete Account</h2>
+                {deleteAlertShow && <Alert variant="danger" onClose={() => setDeleteAlertShow(false)} dismissible>
+                        <Alert.Heading>Error deleting account</Alert.Heading>
+                        <p>
+                            {deleteErrorCode}
+                        </p>
+                    </Alert>}
+                <div id="formButton">
+                        <Button style={{ marginBottom: "4rem" }} variant="primary" type="submit" onClick={deleteSubmit}>
+                            Delete Account
+                        </Button>
+                    </div>
             </div>
+            
         </>
     )
 };
