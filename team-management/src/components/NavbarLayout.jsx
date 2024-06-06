@@ -1,4 +1,4 @@
-import { Outlet, Link } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
@@ -17,20 +17,20 @@ function NavBarLayout() {
     if (user) {
         return (
             <>
-                <Navbar expand="sm" className="bg-primary-subtle">
+                <Navbar expand="sm" bg="primary">
                     <Container className="nav-container">
-                        <Navbar.Text className='navbar-brand'>Team Management</Navbar.Text>
+                        <Navbar.Text className='text-light navbar-brand'>Team Management</Navbar.Text>
                         <Navbar.Toggle aria-controls="navbar-nav" />
                         <Navbar.Collapse id="navbar-nav" className='justify-content-end'>
                             <Nav className="me-auto">
-                                <Nav.Link href="/dashboard">Home</Nav.Link>
-                                <Nav.Link href="/addTask">Add Task</Nav.Link>
+                                <Nav.Link href="/dashboard" className='text-light'>Home</Nav.Link>
+                                <Nav.Link href="/addTask" className='text-light'>Add Task</Nav.Link>
                             </Nav>
                         </Navbar.Collapse>
                         <Navbar.Collapse id="navbar-nav" className='justify-content-end'>
                             <Nav>
-                                <Nav.Link href="/settings">Settings</Nav.Link>
-                                <Nav.Link href="/signOut">Sign Out</Nav.Link>
+                                <Nav.Link href="/settings" className='text-light'>Settings</Nav.Link>
+                                <Nav.Link href="/signOut" className='text-light'>Sign Out</Nav.Link>
                             </Nav>
                         </Navbar.Collapse>
                     </Container>
@@ -42,14 +42,14 @@ function NavBarLayout() {
     //if the user is not logged in
     return (
         <>
-            <Navbar expand="sm" className="bg-primary-subtle">
+            <Navbar expand="sm" bg="primary">
                 <Container className="nav-container">
-                    <Navbar.Text className='navbar-brand'>Team Management</Navbar.Text>
+                    <Navbar.Text className='navbar-brand text-light'>Team Management</Navbar.Text>
                     <Navbar.Toggle aria-controls="navbar-nav" />
                     <Navbar.Collapse id="navbar-nav" className='justify-content-end'>
                         <Nav>
-                            <Nav.Link href="/login">Login </Nav.Link>
-                            <Nav.Link href="/signUp">Sign Up</Nav.Link>
+                            <Nav.Link href="/login" className='text-light'>Login </Nav.Link>
+                            <Nav.Link href="/signUp" className='text-light'>Sign Up</Nav.Link>
                         </Nav>
                     </Navbar.Collapse>
                 </Container>

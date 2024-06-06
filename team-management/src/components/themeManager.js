@@ -38,6 +38,11 @@ export function getSelectColorScheme() {
 
             }),
 
+            menu :(defaultStyles) => ({
+                ...defaultStyles,
+                backgroundColor:"#212529"
+            }),
+
             hover: (defaultStyles) => ({
                 ...defaultStyles,
                 color: state.isSelected ? "#FF0000" : "#FF0000",

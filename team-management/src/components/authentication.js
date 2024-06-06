@@ -2,26 +2,6 @@ import axios from 'axios';
 
 const backendUrl = 'http://127.0.0.1:3000';
 
-//USER AND AUTH ROUTES
-/*
-//SIGNIN
-export const signin = user => {
-    // API call to sign in a user
-    return axios.post("http://localhost:8000/api/signin", JSON.stringify(user), {
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json"
-        }
-    })
-    .then(response => {
-        return response.data; // Return response data
-    })
-    .catch(err => {
-        return err.response.data; // Return error response data
-    })
-}
-*/
-
 export async function loggedIn() {
     try {
         //using axios returns array of objects
