@@ -1,8 +1,8 @@
 import { Form } from "react-bootstrap";
 
-const SortBar = ({defaultValue, onChange}) => {
+const SortBar = ({theme, defaultValue, onChange}) => {
     return (
-      <Form.Select defaultValue={defaultValue} aria-label="Default select example" onChange={(e) => onChange(e.target.value)}>
+      <Form.Select data-bs-theme={theme} defaultValue={defaultValue} aria-label="Default select example" onChange={(e) => onChange(e.target.value)}>
       <option>Sort</option>
       <option value="taskNameAsc">Sort by Name ASC</option>
       <option value="taskNameDsc">Sort by Name DSC</option>

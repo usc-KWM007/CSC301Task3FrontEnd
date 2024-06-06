@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { signOut } from "../components/authentication";
 import { useContext } from "react";
 import UserContext from '../components/userContext';
+import { getTheme } from "../components/themeManager";
 
 function SignOut() {
     const { logoutUser } = useContext(UserContext);
@@ -15,6 +16,8 @@ function SignOut() {
     }
     
     useEffect(() => {signingOut()}, [])
+
+    getTheme()
 
     return (
         <>

@@ -1,7 +1,12 @@
 import { ListGroup } from "react-bootstrap";
 import Card from "react-bootstrap/Card";
 
-const TaskCard = ({ task }) => {
+const TaskCard = ({ task, theme }) => {
+
+  let classNameCard = null
+  if (theme == 'dark') {
+    classNameCard = "bg-dark text-white"
+  }
 
   let formattedDateTime;
 
@@ -12,9 +17,10 @@ const TaskCard = ({ task }) => {
     formattedDateTime = `${formattedDate} ${formattedTime}`
   }
 
+  //data-bs-theme={"dark"}
   return (
     <>
-      <Card style={{ width: "15rem", padding: "1em" }}>
+      <Card className={classNameCard} style={{ width: "15rem", padding: "1em" }}> 
         <Card.Header>
           {task.taskname}
         </Card.Header>
@@ -26,7 +32,7 @@ const TaskCard = ({ task }) => {
 
         <Card.Body>
           <Card.Text>{task.tasklocation}</Card.Text>
-          <ListGroup variant="flush">
+          <ListGroup data-bs-theme={theme} variant="flush">
             {task.assignedEmployees.map((employee, index) => (
               <ListGroup.Item key={index}>{employee.firstname + ' ' + employee.lastname}</ListGroup.Item>
             ))}

@@ -11,7 +11,17 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  /*create variable based on class for the colorScheme attribute to be synced*/
+  .light_theme {
+    --colorScheme: light;
+  };
+  .dark_theme {
+    --colorScheme: dark;
+  };
 }
+
+
 
 a {
   font-weight: 500;
@@ -58,21 +68,6 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-
-  a:hover {
-    color: #747bff;
-  }
-
-  button {
-    background-color: #f9f9f9;
-  }
-}
-
 #cardGrid {
   display: grid;
   grid-gap: 1em;
@@ -93,7 +88,6 @@ button:focus-visible {
 
 #taskLargeView {
   align-items: center;
-  background: white;
   border-radius: 10px;
   display: flex;
   flex-direction: column;
@@ -119,6 +113,7 @@ button:focus-visible {
   display: flex;
   justify-content: space-between;
   justify-content: center;
+  align-items: center;
   margin-top: 1em;
   margin-bottom: 1em;
 }
@@ -152,19 +147,20 @@ button:focus-visible {
 }
 
 .form-control {
-  color-scheme: light;
+  color-scheme: var(--colorScheme);
 }
 
 #searchBar {
-  color-scheme: light;
+  color-scheme: var(--colorScheme);
   width: 100%;
   padding: 0.5rem;
   border-radius: 0.5rem;
 }
 
-.css-b62m3t-container {
+#reactSelect {
   margin-bottom: 1rem;
 }
+
 
 @media (max-width: 800px) {
   #twoRow {

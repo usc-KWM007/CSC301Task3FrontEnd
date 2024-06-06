@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { submitLogin } from "../components/authentication"
 import { useContext } from "react";
 import UserContext from '../components/userContext';
+import { getColorSchemeTheme, getTheme } from "../components/themeManager";
 
 
 function Login() {
@@ -48,13 +49,14 @@ function Login() {
         submitData(formData)
 
     }
-
+    getTheme()
+    const color = getColorSchemeTheme()
 
     return (
         <>
             <h1>Login</h1>
             <div id="formBody">
-                <Form onSubmit={handleSubmit}>
+                <Form data-bs-theme={color} onSubmit={handleSubmit}>
                     <Form.Group className="mb-3">
                         <Form.Label>Email</Form.Label>
                         <Form.Control type="email" name="email" placeholder="Enter email" required value={formData.email} onChange={handleChange} />

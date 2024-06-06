@@ -3,6 +3,7 @@ import { Button, ButtonGroup, ToggleButton, Form, Alert } from "react-bootstrap"
 import { useNavigate } from "react-router-dom";
 import { getAccountData, saveAccountChanges } from "../components/authentication";
 import PasswordStrengthBar from 'react-password-strength-bar';
+import { getTheme, setTheme, getColorSchemeTheme } from "../components/themeManager";
 
 function Settings() {
 
@@ -16,8 +17,8 @@ function Settings() {
     const [submitErrorCode, setSubmitErrorCode] = useState("");
 
     const themeOptions = [
-        { name: 'light', value: '1' },
-        { name: 'dark', value: '2' }
+        { name: 'Light', value: '1', code: "light_theme" },
+        { name: 'Dark', value: '2', code: "dark_theme" }
     ]
 
     const defaultOrderOptions = [
@@ -107,19 +108,23 @@ function Settings() {
     }
 
     const handleChangeTheme = (event) => {
-        let newTheme
         for (let i = 0; i < themeOptions.length; i++) {
             if (themeOptions[i].value == event.currentTarget.value) {
-                newTheme = themeOptions[i].name;
+                const newTheme = themeOptions[i].code;
+                console.log(newTheme)
                 setThemeChoice(newTheme)
+                setTheme(newTheme)
+                getTheme()
             }
         }
-        localStorage.setItem("theme", newTheme)
     }
 
     const handleChange = (event) => {
         setFormData({ ...formData, [event.target.name]: event.target.value });
     };
+
+    getTheme()
+    const color = getColorSchemeTheme()
 
     if (isLoading) {
         return <div className="App">Loading...</div>;
@@ -144,7 +149,7 @@ function Settings() {
             <h2>Modify Account</h2>
             <h4>Email: {formData.email}</h4>
             <div id="formBody">
-                <Form onSubmit={handleSubmit} >
+                <Form data-bs-theme={color} onSubmit={handleSubmit} >
                     <Form.Group className="mb-3">
                         <Form.Label>Change Password</Form.Label>
                         <Form.Control type="password" autoComplete="on" placeholder="Password" name="password" value={formData.password} onChange={handleChange} />
@@ -205,7 +210,7 @@ function Settings() {
                                 variant={idx % 2 ? 'outline-dark' : 'outline-primary'}
                                 name="theme"
                                 value={theme.value}
-                                checked={themeChoice === theme.name}
+                                checked={themeChoice === theme.code}
                                 onChange={handleChangeTheme}
                             >
                                 {theme.name}

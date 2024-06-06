@@ -6,6 +6,7 @@ import { getTasks, deleteTask } from '../components/authentication';
 import SearchBar from '../components/searchBar';
 import SortBar from '../components/sortBar';
 import { useNavigate } from "react-router-dom";
+import { getTheme, getColorSchemeTheme } from '../components/themeManager';
 
 export default function Home() {
 
@@ -176,7 +177,7 @@ export default function Home() {
         {tasks.map((task, index) => {
           return (
             <div key={index} onClick={() => [setTaskClickState(true), setTaskClickData(task)]}>
-              <TaskCard task={task} />
+              <TaskCard theme = {color} task={task} />
             </div>
           )
         })}
@@ -184,6 +185,8 @@ export default function Home() {
     );
   };
 
+  getTheme()
+  const color = getColorSchemeTheme()
 
   if (isLoading) {
     return <div className="App">Loading...</div>;
@@ -204,7 +207,7 @@ export default function Home() {
 
   return (
     <>
-      <Modal show={taskClickState}>
+      <Modal data-bs-theme={color} show={taskClickState}>
         {
           <div id='taskLargeView'>
             <TaskLargeView task={taskClickData} />
@@ -233,7 +236,7 @@ export default function Home() {
           <SearchBar keyword={searchWord} onChange={updateSearchWord} />
         </div>
         <div id="column20">
-          <SortBar defaultValue={defaultSortingOrder} onChange={updateSortMethod} />
+          <SortBar theme = {color} defaultValue={defaultSortingOrder} onChange={updateSortMethod} />
         </div>
       </div>
       <RenderCards />

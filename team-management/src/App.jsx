@@ -40,7 +40,7 @@ function App() {
   }
 
   if (!localStorage.getItem("theme")) {
-    localStorage.setItem("theme","light");
+    localStorage.setItem("theme","light-theme");
   }
 
   function RequireAuth({ children }) {

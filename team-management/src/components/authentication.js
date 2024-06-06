@@ -74,7 +74,6 @@ export async function getAccountData() {
     try {
         //using axios returns array of objects
         const response = await axios.get(backendUrl + '/settings', {withCredentials:true});
-        console.log("Success");
         return response
     } catch (err) {
         console.log(err)
@@ -141,8 +140,6 @@ export async function deleteTask(taskData) {
         const response = await axios.delete(backendUrl + '/dashboard', {
             data: {taskData}
         }, {withCredentials:true});
-        console.log("Success");
-
         return response
     } catch (err) {
         console.log(err)
@@ -155,7 +152,6 @@ export async function deleteTask(taskData) {
 
 export async function submitLogin(data) {  
     try {
-        console.log(data.email, data.password)
         //using axios returns array of objects
         const response = await axios.post(backendUrl + '/login',{
             email: data.email,

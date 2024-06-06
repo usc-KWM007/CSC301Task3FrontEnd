@@ -3,8 +3,7 @@ import { Button, Alert, Form } from "react-bootstrap"
 import Select from 'react-select'
 import { getEmployeesList, submitEditTask } from '../components/authentication';
 import { useNavigate, useLocation } from "react-router-dom";
-
-//Need to collect employeeData from backend in id,label, label being fname,lname
+import { getTheme, getColorSchemeTheme, getSelectColorScheme } from "../components/themeManager";
 
 
 let data = [];
@@ -117,6 +116,10 @@ function EditTask() {
         submitData(formData);
     }
 
+    getTheme()
+    const color = getColorSchemeTheme()
+    const selectScheme = getSelectColorScheme()
+
     if (isLoading) {
         return <div className="App">Loading...</div>;
     }
@@ -138,7 +141,7 @@ function EditTask() {
         <>
             <h1>Edit Task</h1>
             <div id="formBody">
-                <Form onSubmit={handleSubmit}>
+                <Form data-bs-theme={color} onSubmit={handleSubmit}>
                     <Form.Group className="mb-3">
                         <Form.Label>Task Name *</Form.Label>
                         <Form.Control type="text" name="taskName" placeholder="Enter task name" required value={formData.taskName} onChange={handleChange} />
@@ -167,7 +170,7 @@ function EditTask() {
 
                     <Form.Group className="mb-3">
                         <Form.Label>Assigned Employees</Form.Label>
-                        <Select options={options} value={selectedEmployees} onChange={handleEmployeeChange} isMulti={true} />
+                        <Select options={options} styles={selectScheme} value={selectedEmployees} onChange={handleEmployeeChange} isMulti={true} />
                     </Form.Group>
 
                     {editAlertShow && <Alert variant="danger" onClose={() => setEditAlertShow(false)} dismissible>

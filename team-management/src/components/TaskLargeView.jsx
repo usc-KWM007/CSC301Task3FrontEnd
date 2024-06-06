@@ -13,7 +13,6 @@ const TaskLargeView = ({ task }) => {
     }
   }
 
-
   return (
     <>
       <h2> {task.taskname} </h2>
